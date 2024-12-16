@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     # Custom
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'home.apps.HomeConfig',
 ]
 
 MIDDLEWARE = [
