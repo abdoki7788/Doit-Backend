@@ -4,8 +4,8 @@ from .models import Task
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ["name", "added_at", "is_done", "in_list"]
-        read_only_fields = ["added_at", "is_done", "in_list"]
+        fields = ["id", "name", "added_at", "is_done", "in_list", "is_important"]
+        read_only_fields = ["id", "added_at", "is_done", "in_list", "is_important"]
 
     def create(self, validated_data):
         validated_data['author'] = self.context['request'].user

@@ -14,3 +14,4 @@ class Task(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     is_done = models.BooleanField(default=False)
     in_list = models.ForeignKey(List, on_delete=models.SET_NULL, null=True, blank=True)
+    is_important = models.BooleanField(default=False)
