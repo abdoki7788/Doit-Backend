@@ -26,6 +26,13 @@ class TaskActions(mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericView
     def get_queryset(self):
         return Task.objects.filter(author=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        s_data = self.serializer_class(data=request.data)
+        s_data.is_valid(raise_exception=True)
+        s_data.validated_data["author"] = request.user
+        s_data.save()
+        return Response(s_data.data, status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=["get"])
     def set_done(self, request, pk):
         obj = self.get_object()
@@ -64,6 +71,7 @@ class ListsActions(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.Retrie
     def add_task(self, request, *args, **kwargs):
         s_data = self.serializer_class(data=request.data)
         s_data.is_valid(raise_exception=True)
-        s_data.validated_data["author"] = request.user
         s_data.validated_data["in_list"] = self.get_object()
+        s_data.validated_data["author"] = request.user
+        s_data.save()
         return Response(s_data.data, status=status.HTTP_201_CREATED)

@@ -7,9 +7,6 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "added_at", "is_done", "in_list", "is_important"]
         read_only_fields = ["id", "added_at", "is_done", "in_list", "is_important"]
 
-    def create(self, validated_data):
-        validated_data['author'] = self.context['request'].user
-        return super().create(validated_data)
 
 
 class ListSerializer(serializers.ModelSerializer):
