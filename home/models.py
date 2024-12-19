@@ -5,7 +5,7 @@ from accounts.models import User
 
 class List(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, null=True, blank=True)
 
 
 class Task(models.Model):
@@ -13,5 +13,5 @@ class Task(models.Model):
     name = models.CharField(max_length=128)
     added_at = models.DateTimeField(auto_now_add=True)
     is_done = models.BooleanField(default=False)
-    in_list = models.ForeignKey(List, on_delete=models.SET_NULL, null=True, blank=True)
+    in_list = models.ForeignKey(List, on_delete=models.SET_NULL, null=True, blank=True, related_name="tasks")
     is_important = models.BooleanField(default=False)

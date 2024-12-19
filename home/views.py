@@ -1,11 +1,12 @@
-from rest_framework.generics    import mixins, ListCreateAPIView
+from rest_framework import status
+from rest_framework.generics    import RetrieveUpdateDestroyAPIView, mixins, ListCreateAPIView
 from rest_framework.decorators  import action
-from rest_framework.viewsets    import GenericViewSet
+from rest_framework.viewsets    import GenericViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response    import Response
 
-from .models      import Task
-from .serializers import TaskSerializer
+from .models      import List, Task
+from .serializers import TaskSerializer, ListSerializer
 
 # Create your views here.
 
@@ -43,3 +44,26 @@ class TaskActions(mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericView
     def importants(self, request):
         queryset = self.get_queryset().filter(is_important=True)
         return Response(self.serializer_class(queryset, many=True).data)
+
+
+class ListsActions(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, GenericViewSet):
+    queryset = List.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = ListSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(author=self.request.user)
+
+    @action(detail=False, methods=["get"])
+    def add_list(self, request, *args, **kwargs):
+        c_list = List.objects.create(author=request.user)
+        s_data = self.serializer_class(instance=c_list)
+        return Response(s_data.data, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=["post"], serializer_class=TaskSerializer)
+    def add_task(self, request, *args, **kwargs):
+        s_data = self.serializer_class(data=request.data)
+        s_data.is_valid(raise_exception=True)
+        s_data.validated_data["author"] = request.user
+        s_data.validated_data["in_list"] = self.get_object()
+        return Response(s_data.data, status=status.HTTP_201_CREATED)

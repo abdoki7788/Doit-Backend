@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import TasksOverview, TaskActions
+from .views import ListsActions, TasksOverview, TaskActions
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'tasks', TaskActions, basename='task')
+router.register(r'lists', ListsActions, basename='list')
 
 
 urlpatterns = [
