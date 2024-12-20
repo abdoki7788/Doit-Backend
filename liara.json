@@ -1,13 +1,13 @@
 {
-	"app":"doit"
-	"port":80
-	"build":{
-		"location":"iran"
-	}
-	"disks":[
-		{
-			"name":"sqlite"
-			"mountTo":"db"
-		}
-	]
+  "app": "doit",
+  "port": 80,
+  "build": {
+    "location": "iran"
+  },
+  "disks": [
+    {
+      "name": "sqlite",
+      "mountTo": "db"
+    }
+  ]
 }
