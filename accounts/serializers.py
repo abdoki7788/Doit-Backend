@@ -20,7 +20,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError({"password2": "دو رمز عبور مطابقت نداشتند"})
+            raise serializers.ValidationError({"password2": "Passwords dis Not match."})
         return super().validate(attrs)
 
     def get_cleaned_data(self):
