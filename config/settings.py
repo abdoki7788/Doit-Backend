@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
 
     # Custom
@@ -145,9 +146,12 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=4),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=7),
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=60),
+    'SIGNING_KEY': SECRET_KEY,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
